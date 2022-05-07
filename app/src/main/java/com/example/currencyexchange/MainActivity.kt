@@ -1,7 +1,7 @@
 package com.example.currencyexchange
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.currencyexchange.ui.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
