@@ -10,10 +10,12 @@ import com.example.currencyexchange.databinding.VerticalCardviewBinding
 import com.example.currencyexchange.databinding.VerticalRvFragmentBinding
 import com.example.currencyexchange.ui.recyclerview.VerticalRVAdapter
 import com.example.currencyexchange.viewmodel.MainViewModel
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
     private lateinit var verticalRvFragmentBinding: VerticalRvFragmentBinding
-    private lateinit var verticalCardviewBinding: VerticalCardviewBinding
 
     companion object {
         fun newInstance() = MainFragment()
@@ -36,8 +38,9 @@ class MainFragment : Fragment() {
         verticalRecyclerview.layoutManager = LinearLayoutManager(this.context)
 
         val data = ArrayList<String>()
-        for (i in 1..20) {
-            data.add(i.toString())
+        val amountOfDays = ChronoUnit.DAYS.between(LocalDate.parse("1999-01-01"),LocalDate.now())
+        for (i in 0..10) {
+            data.add(LocalDate.now().minusDays(i.toLong()).toString())
         }
         val adapter = VerticalRVAdapter(data)
         verticalRecyclerview.adapter = adapter

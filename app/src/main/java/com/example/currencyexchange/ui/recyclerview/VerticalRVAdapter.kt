@@ -28,8 +28,12 @@ class VerticalRVAdapter(private val dataSet: ArrayList<String>) :
         horizontalLayoutManager.initialPrefetchItemCount = 4
 
         holder.horizontalRecyclerView.apply {
+            val array : ArrayList<String> = ArrayList()
+            for (i in 0..20){
+                array.add(i.toString())
+            }
             layoutManager = horizontalLayoutManager
-            adapter = HorizontalRVAdapter(dataSet)
+            adapter = HorizontalRVAdapter(array)
             setRecycledViewPool(RecyclerView.RecycledViewPool())
         }
     }
