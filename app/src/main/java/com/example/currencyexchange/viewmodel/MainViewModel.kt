@@ -1,6 +1,5 @@
 package com.example.currencyexchange.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.currencyexchange.model.CurrenciesInSpecifiedDateModel
@@ -9,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel (private val apiRepository: ApiRepository) : ViewModel() {
+class MainViewModel(private val apiRepository: ApiRepository) : ViewModel() {
     val error = MutableLiveData<String>()
     val currenciesInSpecifiedDateModel = MutableLiveData<CurrenciesInSpecifiedDateModel>()
 

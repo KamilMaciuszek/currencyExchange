@@ -1,17 +1,18 @@
 package com.example.currencyexchange.ui.recyclerview
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currencyexchange.databinding.VerticalCardviewBinding
 import com.example.currencyexchange.viewmodel.MainViewModel
 
-class VerticalRVAdapter(private val dates: ArrayList<String>, private val viewModel: MainViewModel) :
+class VerticalRVAdapter(
+    private val dates: ArrayList<String>,
+    private val viewModel: MainViewModel
+) :
     RecyclerView.Adapter<VerticalRVAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,11 +34,19 @@ class VerticalRVAdapter(private val dates: ArrayList<String>, private val viewMo
         holder.horizontalRecyclerView.apply {
             viewModel.fetchFromDate(dates[position])
             layoutManager = horizontalLayoutManager
-            viewModel.currenciesInSpecifiedDateModel.observe(holder.horizontalRecyclerView.context as LifecycleOwner,
-                {
-                    rates = it.rates
-                    adapter = HorizontalRVAdapter(rates)
+            viewModel.currenciesInSpecifiedDateModel.observe(
+                holder.horizontalRecyclerView.context as LifecycleOwner
+            ) {
+                rates = it.rates
+                val horizontalAdapter = HorizontalRVAdapter(rates)
+                horizontalAdapter.setOnItemClickListener(object :
+                    HorizontalRVAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                    }
                 })
+                adapter = horizontalAdapter
+
+            }
             setRecycledViewPool(RecyclerView.RecycledViewPool())
         }
     }

@@ -17,9 +17,9 @@ private val moshi = Builder()
     .build()
 
 interface RetrofitService {
-    @Headers("apikey:" + "aUAtxPZgulFqRpDP9VQbyrgEZwSOl1mv")
+    @Headers("apikey:" + "YqOkgrm7nx2CENZlshU4afaAW75ilbm4")
     @GET("{date}")
-    fun fetchFromDate(@Path("date") date: String) : Call<CurrenciesInSpecifiedDateModel>
+    fun fetchFromDate(@Path("date") date: String): Call<CurrenciesInSpecifiedDateModel>
 
     companion object {
         private const val BASE_URL = "https://api.apilayer.com/fixer/"
@@ -35,8 +35,8 @@ interface RetrofitService {
             .connectTimeout(100, java.util.concurrent.TimeUnit.SECONDS)
             .build()
 
-        fun getInstance(): RetrofitService{
-            if(retrofitService == null){
+        fun getInstance(): RetrofitService {
+            if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .baseUrl(BASE_URL)

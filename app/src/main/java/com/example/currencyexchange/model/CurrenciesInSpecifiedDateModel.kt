@@ -6,8 +6,8 @@ import com.squareup.moshi.JsonClass
 data class CurrenciesInSpecifiedDateModel(
     val base: String = "EUR",
     val date: String,
-    val historical : Boolean,
-    val rates: Map<String,Double>,
+    val historical: Boolean,
+    val rates: Map<String, Double>,
     val success: Boolean,
     val timestamp: String
 )

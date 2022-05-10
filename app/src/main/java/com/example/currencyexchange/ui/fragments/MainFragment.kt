@@ -15,7 +15,6 @@ import com.example.currencyexchange.viewmodel.MainViewModel
 import com.example.currencyexchange.viewmodel.MainViewModelFactory
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
     private lateinit var verticalRvFragmentBinding: VerticalRvFragmentBinding
@@ -23,6 +22,7 @@ class MainFragment : Fragment() {
     companion object {
         fun newInstance() = MainFragment()
     }
+
     private val retrofitService = RetrofitService.getInstance()
     private lateinit var viewModel: MainViewModel
 
@@ -37,18 +37,22 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this, MainViewModelFactory(ApiRepository(retrofitService)))[MainViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            MainViewModelFactory(ApiRepository(retrofitService))
+        )[MainViewModel::class.java]
 
         val verticalRecyclerview = verticalRvFragmentBinding.rvVertical
         verticalRecyclerview.layoutManager = LinearLayoutManager(this.context)
 
         val dates = ArrayList<String>()
-        val amountOfDays = ChronoUnit.DAYS.between(LocalDate.parse("1999-01-01"),LocalDate.now())
-        for (i in 1..amountOfDays) {
-            dates.add(LocalDate.now().minusDays(i).toString())
+        val amountOfDays = ChronoUnit.DAYS.between(LocalDate.parse("1999-01-01"), LocalDate.now())
+        for (i in 0..2) {
+            dates.add(LocalDate.now().minusDays(i.toLong()).toString())
         }
         val adapter = VerticalRVAdapter(dates, viewModel)
         verticalRecyclerview.adapter = adapter
+
     }
 
 }
