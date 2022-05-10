@@ -1,12 +1,13 @@
 package com.example.currencyexchange.ui.recyclerview
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currencyexchange.databinding.HorizontalCardviewBinding
 
-class HorizontalRVAdapter(private val dataSet: ArrayList<String>) :
+class HorizontalRVAdapter(private val dataSet: Map<String, Double>?) :
     RecyclerView.Adapter<HorizontalRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -15,12 +16,12 @@ class HorizontalRVAdapter(private val dataSet: ArrayList<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val items = dataSet[position]
-        holder.textView.text = items
+        val rates = dataSet?.toList()?.map { "${it.first} : ${it.second}" }
+        holder.textView.text = rates!![position]
     }
 
     override fun getItemCount(): Int {
-        return dataSet.size
+        return dataSet!!.count()
     }
 
     class ViewHolder(binding: HorizontalCardviewBinding) : RecyclerView.ViewHolder(binding.root) {

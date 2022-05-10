@@ -15,6 +15,7 @@
         android:id="@+id/horizontal_tv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:text="" />
 
 </androidx.cardview.widget.CardView>
