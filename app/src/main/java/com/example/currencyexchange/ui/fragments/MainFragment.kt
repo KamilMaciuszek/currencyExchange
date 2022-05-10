@@ -19,10 +19,6 @@ import java.time.temporal.ChronoUnit
 class MainFragment : Fragment() {
     private lateinit var verticalRvFragmentBinding: VerticalRvFragmentBinding
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private val retrofitService = RetrofitService.getInstance()
     private lateinit var viewModel: MainViewModel
 
@@ -47,7 +43,7 @@ class MainFragment : Fragment() {
 
         val dates = ArrayList<String>()
         val amountOfDays = ChronoUnit.DAYS.between(LocalDate.parse("1999-01-01"), LocalDate.now())
-        for (i in 0..2) {
+        for (i in 0..0) {
             dates.add(LocalDate.now().minusDays(i.toLong()).toString())
         }
         val adapter = VerticalRVAdapter(dates, viewModel)

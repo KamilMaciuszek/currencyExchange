@@ -17,7 +17,7 @@ private val moshi = Builder()
     .build()
 
 interface RetrofitService {
-    @Headers("apikey:" + "YqOkgrm7nx2CENZlshU4afaAW75ilbm4")
+    @Headers("apikey:" + "70QgRQYC48iI8gZmAWq8zREhnHovRGxB")
     @GET("{date}")
     fun fetchFromDate(@Path("date") date: String): Call<CurrenciesInSpecifiedDateModel>
 

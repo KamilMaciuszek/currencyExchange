@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currencyexchange.databinding.VerticalCardviewBinding
+import com.example.currencyexchange.ui.fragments.MainFragmentDirections
 import com.example.currencyexchange.viewmodel.MainViewModel
 
 class VerticalRVAdapter(
@@ -22,6 +24,7 @@ class VerticalRVAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val itemsViewModel = dates[position]
         holder.textView.text = itemsViewModel
         val horizontalLayoutManager = LinearLayoutManager(
@@ -42,6 +45,8 @@ class VerticalRVAdapter(
                 horizontalAdapter.setOnItemClickListener(object :
                     HorizontalRVAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
+                        val action = MainFragmentDirections.actionMainFragmentToDetailsFragment()
+                        findNavController().navigate(action)
                     }
                 })
                 adapter = horizontalAdapter
