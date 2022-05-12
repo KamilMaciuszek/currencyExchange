@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">currencyExchange</string>
+    <string name="app_name">World Currencies</string>
+    <string name="colon">:</string>
 </resources>
