@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.currencyexchange.databinding.VerticalRvFragmentBinding
 import com.example.currencyexchange.model.CurrenciesInSpecifiedDateModel
 import com.example.currencyexchange.retrofit.RetrofitService
@@ -53,10 +54,18 @@ class MainFragment : Fragment() {
             dates.add(LocalDate.now().minusDays(i).toString())
         }
 
+        checkNetwork(dates,list, verticalRecyclerview)
+
+    }
+
+    private fun checkNetwork(
+        dates: ArrayList<String>,
+        list: MutableList<CurrenciesInSpecifiedDateModel>,
+        verticalRecyclerview: RecyclerView
+    ) {
         val connMgr =
             activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connMgr.activeNetworkInfo
-
         if (networkInfo != null && networkInfo.isConnected) {
             val adapter = VerticalRVAdapter(dates, viewModel, list)
             verticalRecyclerview.adapter = adapter
@@ -67,6 +76,5 @@ class MainFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         }
-
     }
 }
