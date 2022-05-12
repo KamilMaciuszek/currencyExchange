@@ -28,7 +28,6 @@ class HorizontalRVAdapter(private val dataSet: Map<String, Double>?) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val rates = dataSet?.toList()?.map { "${it.first} : ${it.second}" }
         holder.textView.text = rates!![position]
-
     }
 
     override fun getItemCount(): Int {

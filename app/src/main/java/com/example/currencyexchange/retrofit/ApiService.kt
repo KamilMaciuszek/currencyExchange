@@ -3,10 +3,11 @@ package com.example.currencyexchange.retrofit
 import com.example.currencyexchange.model.CurrenciesInSpecifiedDateModel
 import com.squareup.moshi.Moshi.Builder
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -17,9 +18,9 @@ private val moshi = Builder()
     .build()
 
 interface RetrofitService {
-    @Headers("apikey:" + "qE4WIgmE591qmaaNmgkiRhh65QSa2VAT")
+    @Headers("apikey:" + "t426Lvec7z6Kf4gc8edfhC8kKaCP9h6d")
     @GET("{date}")
-    fun fetchFromDate(@Path("date") date: String): Call<CurrenciesInSpecifiedDateModel>
+    fun fetchFromDate(@Path("date") date: String): Observable<CurrenciesInSpecifiedDateModel>
 
     companion object {
         private const val BASE_URL = "https://api.apilayer.com/fixer/"
@@ -38,6 +39,7 @@ interface RetrofitService {
         fun getInstance(): RetrofitService {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .baseUrl(BASE_URL)
                     .client(client)

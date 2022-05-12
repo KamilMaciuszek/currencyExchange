@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.currencyexchange.databinding.VerticalRvFragmentBinding
 import com.example.currencyexchange.model.CurrenciesInSpecifiedDateModel
-import com.example.currencyexchange.retrofit.ApiRepository
 import com.example.currencyexchange.retrofit.RetrofitService
 import com.example.currencyexchange.ui.recyclerview.VerticalRVAdapter
 import com.example.currencyexchange.viewmodel.MainViewModel
@@ -33,10 +32,9 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProvider(
             this,
-            MainViewModelFactory(ApiRepository(retrofitService))
+            MainViewModelFactory(retrofitService)
         )[MainViewModel::class.java]
 
         val verticalRecyclerview = verticalRvFragmentBinding.rvVertical
@@ -46,16 +44,10 @@ class MainFragment : Fragment() {
         val list: MutableList<CurrenciesInSpecifiedDateModel> =
             emptyList<CurrenciesInSpecifiedDateModel>().toMutableList()
         val amountOfDays = ChronoUnit.DAYS.between(LocalDate.parse("1999-01-01"), LocalDate.now())
-        for (i in 0..2) {
-            dates.add(LocalDate.now().minusDays(i.toLong()).toString())
-            viewModel.fetchFromDate(dates[i])
-            viewModel.currenciesInSpecifiedDateModel.observe(viewLifecycleOwner) {
-                list.add(it)
-            }
+        for (i in 0..amountOfDays) {
+            dates.add(LocalDate.now().minusDays(i).toString())
         }
         val adapter = VerticalRVAdapter(dates, viewModel, list)
         verticalRecyclerview.adapter = adapter
-
     }
-
 }

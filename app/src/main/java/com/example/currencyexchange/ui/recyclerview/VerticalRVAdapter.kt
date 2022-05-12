@@ -28,6 +28,7 @@ class VerticalRVAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val date = dates[position]
+        viewModel.fetchFromDate(date)
         holder.textView.text = date
         val horizontalLayoutManager = LinearLayoutManager(
             holder.horizontalRecyclerView.context,
@@ -36,15 +37,13 @@ class VerticalRVAdapter(
         )
         var rates: Map<String, Double>?
         holder.horizontalRecyclerView.apply {
-            viewModel.fetchFromDate(date)
             layoutManager = horizontalLayoutManager
             viewModel.currenciesInSpecifiedDateModel.observe(
                 holder.horizontalRecyclerView.context as LifecycleOwner
             ) {
+                list.add(it)
                 if (list.firstOrNull { t -> t.date == date } != null) {
-
                     val selectedRate = list.first { t -> t.date == date }
-
                     rates = selectedRate.rates
                     val horizontalAdapter = HorizontalRVAdapter(rates)
                     horizontalAdapter.setOnItemClickListener(object :
@@ -61,9 +60,13 @@ class VerticalRVAdapter(
 
                         }
                     })
+
                     adapter = horizontalAdapter
+                } else {
+                    holder.itemView.invalidate()
                 }
             }
+            horizontalLayoutManager.initialPrefetchItemCount = 4
             setRecycledViewPool(RecyclerView.RecycledViewPool())
         }
     }
