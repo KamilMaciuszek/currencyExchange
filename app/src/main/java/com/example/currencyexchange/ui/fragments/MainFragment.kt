@@ -1,9 +1,12 @@
 package com.example.currencyexchange.ui.fragments
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,8 @@ import com.example.currencyexchange.viewmodel.MainViewModelFactory
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+
+@Suppress("DEPRECATION")
 class MainFragment : Fragment() {
     private lateinit var verticalRvFragmentBinding: VerticalRvFragmentBinding
 
@@ -47,7 +52,21 @@ class MainFragment : Fragment() {
         for (i in 0..amountOfDays) {
             dates.add(LocalDate.now().minusDays(i).toString())
         }
-        val adapter = VerticalRVAdapter(dates, viewModel, list)
-        verticalRecyclerview.adapter = adapter
+
+        val connMgr =
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connMgr.activeNetworkInfo
+
+        if (networkInfo != null && networkInfo.isConnected) {
+            val adapter = VerticalRVAdapter(dates, viewModel, list)
+            verticalRecyclerview.adapter = adapter
+        } else {
+            Toast.makeText(
+                this.context,
+                "Check internet connection and try again",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
     }
 }
