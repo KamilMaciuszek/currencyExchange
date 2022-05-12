@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.currencyexchange.databinding.VerticalRvFragmentBinding
+import com.example.currencyexchange.model.CurrenciesInSpecifiedDateModel
 import com.example.currencyexchange.retrofit.ApiRepository
 import com.example.currencyexchange.retrofit.RetrofitService
 import com.example.currencyexchange.ui.recyclerview.VerticalRVAdapter
@@ -42,11 +43,17 @@ class MainFragment : Fragment() {
         verticalRecyclerview.layoutManager = LinearLayoutManager(this.context)
 
         val dates = ArrayList<String>()
+        val list: MutableList<CurrenciesInSpecifiedDateModel> =
+            emptyList<CurrenciesInSpecifiedDateModel>().toMutableList()
         val amountOfDays = ChronoUnit.DAYS.between(LocalDate.parse("1999-01-01"), LocalDate.now())
-        for (i in 0..0) {
+        for (i in 0..2) {
             dates.add(LocalDate.now().minusDays(i.toLong()).toString())
+            viewModel.fetchFromDate(dates[i])
+            viewModel.currenciesInSpecifiedDateModel.observe(viewLifecycleOwner) {
+                list.add(it)
+            }
         }
-        val adapter = VerticalRVAdapter(dates, viewModel)
+        val adapter = VerticalRVAdapter(dates, viewModel, list)
         verticalRecyclerview.adapter = adapter
 
     }

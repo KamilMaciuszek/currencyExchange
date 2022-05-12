@@ -15,6 +15,7 @@ class MainViewModel(private val apiRepository: ApiRepository) : ViewModel() {
     fun fetchFromDate(date: String) {
         val response = apiRepository.getAllCurrencies(date)
         response.enqueue(object : Callback<CurrenciesInSpecifiedDateModel> {
+
             override fun onResponse(
                 call: Call<CurrenciesInSpecifiedDateModel>,
                 response: Response<CurrenciesInSpecifiedDateModel>
@@ -27,4 +28,5 @@ class MainViewModel(private val apiRepository: ApiRepository) : ViewModel() {
             }
         })
     }
+
 }

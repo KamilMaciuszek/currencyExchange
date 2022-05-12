@@ -8,12 +8,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.currencyexchange.databinding.VerticalCardviewBinding
+import com.example.currencyexchange.model.CurrenciesInSpecifiedDateModel
 import com.example.currencyexchange.ui.fragments.MainFragmentDirections
 import com.example.currencyexchange.viewmodel.MainViewModel
 
 class VerticalRVAdapter(
     private val dates: ArrayList<String>,
-    private val viewModel: MainViewModel
+    private val viewModel: MainViewModel,
+    private val list: MutableList<CurrenciesInSpecifiedDateModel>
 ) :
     RecyclerView.Adapter<VerticalRVAdapter.ViewHolder>() {
 
@@ -25,32 +27,42 @@ class VerticalRVAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val itemsViewModel = dates[position]
-        holder.textView.text = itemsViewModel
+        val date = dates[position]
+        holder.textView.text = date
         val horizontalLayoutManager = LinearLayoutManager(
             holder.horizontalRecyclerView.context,
             LinearLayoutManager.HORIZONTAL,
             false
         )
         var rates: Map<String, Double>?
-
         holder.horizontalRecyclerView.apply {
-            viewModel.fetchFromDate(dates[position])
+            viewModel.fetchFromDate(date)
             layoutManager = horizontalLayoutManager
             viewModel.currenciesInSpecifiedDateModel.observe(
                 holder.horizontalRecyclerView.context as LifecycleOwner
             ) {
-                rates = it.rates
-                val horizontalAdapter = HorizontalRVAdapter(rates)
-                horizontalAdapter.setOnItemClickListener(object :
-                    HorizontalRVAdapter.OnItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        val action = MainFragmentDirections.actionMainFragmentToDetailsFragment()
-                        findNavController().navigate(action)
-                    }
-                })
-                adapter = horizontalAdapter
+                if (list.firstOrNull { t -> t.date == date } != null) {
 
+                    val selectedRate = list.first { t -> t.date == date }
+
+                    rates = selectedRate.rates
+                    val horizontalAdapter = HorizontalRVAdapter(rates)
+                    horizontalAdapter.setOnItemClickListener(object :
+                        HorizontalRVAdapter.OnItemClickListener {
+                        override fun onItemClick(position: Int) {
+                            val currency = rates!!.toList()[position].first
+                            val rate = rates!!.toList()[position].second
+                            val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(
+                                currency = currency,
+                                rate = rate.toFloat(),
+                                date = date
+                            )
+                            findNavController().navigate(action)
+
+                        }
+                    })
+                    adapter = horizontalAdapter
+                }
             }
             setRecycledViewPool(RecyclerView.RecycledViewPool())
         }
@@ -64,6 +76,5 @@ class VerticalRVAdapter(
         val horizontalRecyclerView: RecyclerView = binding.horizontalRv
         val textView: TextView = binding.textView
     }
-
 
 }

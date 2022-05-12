@@ -9,7 +9,17 @@
         android:id="@+id/detailsFragment"
         android:name="com.example.currencyexchange.ui.fragments.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="currency"
+            app:argType="string" />
+        <argument
+            android:name="rate"
+            app:argType="float" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.currencyexchange.ui.fragments.MainFragment"
