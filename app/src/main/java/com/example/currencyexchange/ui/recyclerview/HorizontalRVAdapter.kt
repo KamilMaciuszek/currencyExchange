@@ -31,7 +31,7 @@ class HorizontalRVAdapter(private val dataSet: Map<String, Double>?) :
     }
 
     override fun getItemCount(): Int {
-        return dataSet!!.count()
+        return dataSet?.count() ?: 0
     }
 
     class ViewHolder(binding: HorizontalCardviewBinding, listener: OnItemClickListener) :

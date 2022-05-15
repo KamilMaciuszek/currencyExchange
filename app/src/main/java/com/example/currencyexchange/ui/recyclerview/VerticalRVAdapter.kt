@@ -42,29 +42,27 @@ class VerticalRVAdapter(
                 holder.horizontalRecyclerView.context as LifecycleOwner
             ) {
                 list.add(it)
-                if (list.firstOrNull { t -> t.date == date } != null) {
-                    val selectedRate = list.first { t -> t.date == date }
-                    rates = selectedRate.rates
-                    val horizontalAdapter = HorizontalRVAdapter(rates)
-                    horizontalAdapter.setOnItemClickListener(object :
-                        HorizontalRVAdapter.OnItemClickListener {
-                        override fun onItemClick(position: Int) {
-                            val currency = rates!!.toList()[position].first
-                            val rate = rates!!.toList()[position].second
-                            val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(
-                                currency = currency,
-                                rate = rate.toFloat(),
-                                date = date
-                            )
-                            findNavController().navigate(action)
-
-                        }
-                    })
-
-                    adapter = horizontalAdapter
-                } else {
-                    holder.itemView.invalidate()
+                val selectedRate = list.firstOrNull { t -> t.date == date }
+                if (selectedRate == null) {
+                    viewModel.fetchFromDate(date)
                 }
+                rates = selectedRate?.rates
+                val horizontalAdapter = HorizontalRVAdapter(rates)
+                horizontalAdapter.setOnItemClickListener(object :
+                    HorizontalRVAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        val currency = rates!!.toList()[position].first
+                        val rate = rates!!.toList()[position].second
+                        val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(
+                            currency = currency,
+                            rate = rate.toFloat(),
+                            date = date
+                        )
+                        findNavController().navigate(action)
+
+                    }
+                })
+                adapter = horizontalAdapter
             }
             horizontalLayoutManager.initialPrefetchItemCount = 4
             setRecycledViewPool(RecyclerView.RecycledViewPool())

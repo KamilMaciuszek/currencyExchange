@@ -54,7 +54,7 @@ class MainFragment : Fragment() {
             dates.add(LocalDate.now().minusDays(i).toString())
         }
 
-        checkNetwork(dates,list, verticalRecyclerview)
+        checkNetwork(dates, list, verticalRecyclerview)
 
     }
 
